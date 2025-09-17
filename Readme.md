@@ -1,7 +1,8 @@
 
+
 # DrawMind
 
-DrawMind is a full-stack application for generating, editing, and rendering UML diagrams using natural language prompts and LLMs (Large Language Models). It supports PlantUML and integrates with Kroki for diagram rendering. The project is modular, extensible, and designed for both frontend and backend development.
+DrawMind is a modern, full-stack platform for generating, editing, and visualizing UML diagrams from natural language prompts. Powered by advanced LLMs and seamless PlantUML integration, DrawMind empowers users to create and modify diagrams effortlessly—no technical expertise required. The project is architected for scalability, extensibility, and rapid development, with a robust backend and a user-friendly frontend (coming soon).
 
 ## Features
 - Generate UML diagrams from natural language prompts using LLMs
@@ -10,6 +11,7 @@ DrawMind is a full-stack application for generating, editing, and rendering UML 
 - User authentication and registration (JWT-ready)
 - Modular service and schema structure for easy extension
 - Pydantic models for robust validation
+
 
 
 ## Folder Structure
@@ -24,41 +26,52 @@ Backend/
 ```
 
 
+
 ## Tech Stack
-- Python 3.10+
-- FastAPI (backend)
-- Pydantic
-- SQLAlchemy (planned)
-- PlantUML, Kroki
-- Google GenAI (Gemini)
-- JWT/OAuth2 (planned)
-- Frontend (framework coming soon)
+- **Python 3.10+**
+- **FastAPI** (backend API)
+- **Pydantic** (data validation)
+- **Supabase** or **Neon** (PostgreSQL cloud database)
+- **SQLAlchemy** (ORM, planned)
+- **PlantUML**, **Kroki** (diagram rendering)
+- **Google GenAI (Gemini)** (LLM integration)
+- **JWT/OAuth2** (authentication, planned)
+- **Frontend** (framework coming soon)
 
 
-## Setup (Backend)
-1. Clone the repo
-2. Create and activate a virtual environment
-3. Install dependencies:
+
+## Getting Started
+
+### Backend
+1. **Clone the repository**
+2. **Create and activate a virtual environment**
+3. **Install dependencies:**
 	```bash
 	pip install -r requirements.txt
 	```
-4. Set up environment variables (see `.env.example`)
-5. Run the FastAPI app:
+4. **Configure environment variables** (see `.env.example`)
+5. **Set up your database:**
+	- Provision a PostgreSQL instance using [Supabase](https://supabase.com/) or [Neon](https://neon.tech/)
+	- Update your database URL in the environment config
+6. **Run the FastAPI app:**
 	```bash
 	uvicorn app.main:app --reload
 	```
 
-## Setup (Frontend)
+### Frontend
 Frontend code and setup instructions coming soon!
 
-## API Endpoints (examples)
-- `POST /generate_code` — Generate UML code from prompt
+
+## Example API Endpoints
+- `POST /generate_code` — Generate UML code from a natural language prompt
 - `POST /render` — Render UML code to SVG
 - `POST /register` — Register a new user
-- `POST /login` — Authenticate and get a token
+- `POST /login` — Authenticate and receive a secure token
+
 
 ## Contributing
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+We welcome contributions from the community! If you have ideas, suggestions, or bug fixes, please open an issue or submit a pull request. For major changes, start a discussion first to ensure alignment with the project vision.
+
 
 ## License
-MIT
+MIT — free for personal and commercial use.
