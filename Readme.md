@@ -6,10 +6,6 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.116.1-green.svg)](https://fastapi.tiangolo.com/)
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/mann-rana29/DrawMind/main/assets/drawmind-demo.gif" alt="DrawMind Demo" width="600"/>
-</p>
-
 DrawMind is a modern, full-stack platform for generating, editing, and visualizing UML diagrams from natural language prompts. Powered by advanced LLMs and seamless PlantUML integration, DrawMind empowers users to create and modify diagrams effortlessly—no technical expertise required. The project is architected for scalability, extensibility, and rapid development, with a robust backend and a user-friendly frontend (coming soon).
 
 ## ✨ Features
