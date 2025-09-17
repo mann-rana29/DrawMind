@@ -7,8 +7,3 @@ class Response(BaseModel):
     data: Optional[Any] = None
     error: Optional[str] = None
 
-
-# Example schema for rendering requests
-class RenderRequest(BaseModel):
-    diagram_code: str
-    diagram_type: str

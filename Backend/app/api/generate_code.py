@@ -1,11 +1,34 @@
-from app.services.llm_service import generate_code_llm
+from fastapi import APIRouter, HTTPException
+from app.services import generate_code_llm, generate_prompt
+from app.schemas import Response
+from pydantic import BaseModel
 
-def generate_code(text: str):
+router = APIRouter()
+
+class GenerateRequest(BaseModel):
+    prompt: str  # The user's natural language prompt
+
+@router.post("/generate", response_model=Response)
+async def generate_code(request: GenerateRequest):
     """
-    API handler for code generation. Calls service layer.
+    Generate UML diagram code from natural language prompt.
+    This endpoint accepts a prompt and returns generated PlantUML code.
     """
     try:
-        return generate_code_llm(text)
+        # Call your service layer
+        optimized_prompt = generate_prompt(request.prompt)
+        generated_code = generate_code_llm(optimized_prompt)
+
+        # Return structured response
+        return Response(
+            success=True,
+            data={"code": generated_code},
+            message="Diagram code generated successfully"
+        )
+
     except Exception as e:
-        # Return error message or raise as needed
-        return {"error": str(e)}
+        # Use HTTPException for proper error handling
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate diagram code: {str(e)}"
+        )

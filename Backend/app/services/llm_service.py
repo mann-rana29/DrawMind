@@ -38,7 +38,7 @@ def generate_code_llm(text: str) -> str:
     except Exception as e:
         # Log or handle error as needed
         raise Exception(f"LLM code generation failed: {e}")
-def generate_prompt(text : str , code_lan : str) -> str:
+def generate_prompt(text : str) -> str:
     try:
         system_instruct = get_system_instruction_for_prompt()
         response = client.models.generate_content(
@@ -48,7 +48,7 @@ def generate_prompt(text : str , code_lan : str) -> str:
                     temperature=0.7,
                     top_p=0.5,
                 ),
-                contents= f"{text} and the code language is {code_lan} "   
+                contents= f"{text} and the code language is plantuml "   
         )
         return response.text
     except Exception as e:
