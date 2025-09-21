@@ -64,6 +64,9 @@ async def create_tables():
     Create all database tables.
     Call this on application startup.
     """
+    # Import models so SQLAlchemy knows about them
+    from app.models import User, Diagram, ChatHistory
+    
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 

@@ -10,7 +10,7 @@ from .render import router as render_router
 # You can also import all routers at once:
 __all__ = [
     "generate_router",
-    # "render_router",    # Uncomment when implemented
+    "render_router",    
     # "edit_router",      # Uncomment when implemented
     # "auth_router",      # Uncomment when implemented
 ]
