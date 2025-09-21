@@ -3,7 +3,7 @@
 # and provides convenient imports for routers
 
 from .generate_code import router as generate_router
-# from .render import router as render_router        # Uncomment when implemented
+from .render import router as render_router       
 # from .edit import router as edit_router            # Uncomment when implemented
 # from .auth import router as auth_router            # Uncomment when implemented
 
