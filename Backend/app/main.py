@@ -2,12 +2,13 @@ from fastapi import FastAPI
 from app.api import generate_router, render_router, chat_router
 
 from contextlib import asynccontextmanager
-from app.database import create_tables
+from app.database import create_tables, create_default_user
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await create_tables()
+    await create_default_user()  # Create default test user
     yield
 
 app = FastAPI(

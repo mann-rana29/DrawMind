@@ -18,23 +18,46 @@ async def continue_chat(diagram_id : int , request : GenerateRequest, db : Async
         if not diagram:
             raise HTTPException(status_code=404, detail="Diagram not found")
 
+        # Get only the last 3 messages for context (to keep prompt size manageable)
         chat_history = await db.execute(
-            select(ChatHistory).filter(ChatHistory.diagram_id  ==  diagram_id).order_by(ChatHistory.message_order)
+            select(ChatHistory)
+            .filter(ChatHistory.diagram_id == diagram_id)
+            .order_by(ChatHistory.message_order.desc())
+            .limit(3)  # Only last 3 messages
         )
-        previous_messages = chat_history.scalars().all()
+        recent_messages = list(reversed(chat_history.scalars().all()))  # Reverse to chronological order
 
-        context = f"Current diagram: \n{diagram.plantuml_code} \n\n"
-        context += "Previous conversation: \n"
-        for msg in previous_messages:
-            context += f"User : {msg.user_message}\nAI: {msg.ai_response}\n\n"
-        context += f"User : {request.prompt}\n"
+        # Build optimized context with limited history
+        context = f"""TASK: Update the existing PlantUML diagram based on the user's request.
+
+                    CURRENT DIAGRAM:
+                    {diagram.plantuml_code}
+
+                    RECENT CONVERSATION (last 3 messages):
+                    """
+        for msg in recent_messages:
+            context += f"User: {msg.user_message}\nAI: Modified diagram\n\n"
+        
+        context += f"""NEW USER REQUEST: {request.prompt}
+
+        INSTRUCTIONS: 
+        - Take the CURRENT DIAGRAM above and MODIFY it according to the NEW USER REQUEST
+        - KEEP all existing elements unless specifically asked to remove them
+        - ADD the new elements/interactions requested by the user
+        - Return the COMPLETE updated PlantUML diagram with both old and new elements
+        - Do NOT create a new diagram from scratch"""
 
         optimized_prompt = generate_prompt(context)
         updated_code = generate_code_llm(optimized_prompt)
 
         diagram.plantuml_code = updated_code
 
-        next_order  = len(previous_messages) + 1
+        # Get the actual message count for proper ordering
+        total_messages_result = await db.execute(
+            select(ChatHistory).filter(ChatHistory.diagram_id == diagram_id)
+        )
+        total_messages = len(total_messages_result.scalars().all())
+        next_order = total_messages + 1
         new_chat = ChatHistory(
             diagram_id = diagram_id,
             user_message  = request.prompt,
