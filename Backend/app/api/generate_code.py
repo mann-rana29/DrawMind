@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from app.database import get_db
 from app.services import generate_code_llm, generate_prompt
+from app.models import Diagram , ChatHistory
 from app.schemas import Response
 from pydantic import BaseModel
 
@@ -12,7 +13,7 @@ class GenerateRequest(BaseModel):
     prompt: str  # The user's natural language prompt
 
 @router.post("/generate", response_model=Response)
-async def generate_code(request: GenerateRequest):
+async def generate_code(request: GenerateRequest , db : AsyncSession = Depends(get_db)):
     """
     Generate UML diagram code from natural language prompt.
     This endpoint accepts a prompt and returns generated PlantUML code.
@@ -22,15 +23,42 @@ async def generate_code(request: GenerateRequest):
         optimized_prompt = generate_prompt(request.prompt)
         generated_code = generate_code_llm(optimized_prompt)
 
+        diagram = Diagram(
+            owner_id = 1,
+            title = request.prompt,
+            plantuml_code = generated_code,
+            svg_content = None
+        )
+        
+        db.add(diagram)
+        await db.flush()
+
+        chat_message = ChatHistory(
+            diagram_id = diagram.id,
+            user_message = request.prompt,
+            ai_responses = generated_code,
+            message_order = 1
+        )
+        db.add(chat_message)
+
+
+        await db.commit()
+
+
         # Return structured response
         return Response(
             success=True,
-            data={"code": generated_code},
-            message="Diagram code generated successfully"
+            data={
+                    "code": generated_code,
+                    "diagram_id" : diagram.id,
+                    "title" : diagram.title
+                },
+            message="Diagram code generated and saved successfully"
         )
 
     except Exception as e:
         # Use HTTPException for proper error handling
+        await db.rollback()
         raise HTTPException(
             status_code=500,
             detail=f"Failed to generate diagram code: {str(e)}"
