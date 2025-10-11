@@ -33,5 +33,5 @@ async def render(request :RenderRequest , db : AsyncSession = Depends(get_db)):
 
         )
     except Exception as e:
-        db.rollback()
+        await db.rollback()
         raise HTTPException(status_code=500, detail= f"Unable to render svg : {e}")

@@ -36,7 +36,7 @@ async def generate_code(request: GenerateRequest , db : AsyncSession = Depends(g
         chat_message = ChatHistory(
             diagram_id = diagram.id,
             user_message = request.prompt,
-            ai_responses = generated_code,
+            ai_response = generated_code,
             message_order = 1
         )
         db.add(chat_message)
