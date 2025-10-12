@@ -20,7 +20,7 @@ def create_access_token(user_id : int , username : str) -> str:
     }
     return jwt.encode(to_encode, JWT_SECRET_KEY , algorithm= ALGORITHM)
 
-def verify_access_token(token : str) -> Optional[dict]:
+def verify_token(token : str) -> Optional[dict]:
     try:
         payload = jwt.decode(token,JWT_SECRET_KEY, algorithms=[ALGORITHM])
         user_id = payload.get("user_id")
