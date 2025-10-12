@@ -28,11 +28,16 @@ engine = create_async_engine(
     DATABASE_URL,
     echo=True,  # Set to False in production
     future=True,
+    pool_size=5,
+    max_overflow=10,
+    pool_pre_ping=True,  # Validates connections before use
+    pool_recycle=300,    # Recycle connections every 5 minutes
     connect_args={
         "ssl": "require",
         "server_settings": {
             "application_name": "DrawMind",
-        }
+        },
+        "command_timeout": 60,
     }
 )
 
@@ -55,6 +60,10 @@ async def get_db():
     async with AsyncSessionLocal() as session:
         try:
             yield session
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
         finally:
             await session.close()
 

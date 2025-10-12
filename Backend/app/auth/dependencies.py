@@ -2,6 +2,7 @@ from fastapi import Depends, HTTPException , status
 from fastapi.security import HTTPBearer , HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.exc import InterfaceError, DisconnectionError
 
 from app.database import get_db
 from app.models import User
@@ -16,10 +17,23 @@ async def get_current_user(credentials : HTTPAuthorizationCredentials = Depends(
     if not token_data:
         raise HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials" , headers= {"WWW-Authenticate" : "Bearer"})
     
-    result = await db.execute(
-        select(User).filter(User.id == token_data["user_id"])
-    )
-    user = result.scalar_one_or_none()
+    try:
+        result = await db.execute(
+            select(User).filter(User.id == token_data["user_id"])
+        )
+        user = result.scalar_one_or_none()
+    except (InterfaceError, DisconnectionError) as e:
+        # Database connection issue - return a more specific error
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database connection unavailable. Please try again."
+        )
+    except Exception as e:
+        # Other database errors
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Database error occurred"
+        )
 
     if not user or not user.is_active:
         raise HTTPException(
