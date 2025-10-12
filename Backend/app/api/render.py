@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException , Depends 
 from pydantic import BaseModel
-from app.schemas import Response
+from app.schemas import Response 
+from app.models import User , Diagram
 from app.services import kroki_rendering_svg
 from app.database import AsyncSession , get_db
-from app.models import Diagram
-
+from app.auth.dependencies import get_current_user
 
 router = APIRouter()
 
@@ -13,13 +13,16 @@ class RenderRequest(BaseModel):
     diagram_code: str
 
 @router.post("/render",response_model=Response)
-async def render(request :RenderRequest , db : AsyncSession = Depends(get_db)):
+async def render(request :RenderRequest , db : AsyncSession = Depends(get_db) , current_user : User = Depends(get_current_user)):
     try:
         svg_code = kroki_rendering_svg(request.diagram_code)
         diagram = await db.get(Diagram , request.diagram_id)
 
         if not diagram:
             raise HTTPException(status_code=404 , detail="Diagram not found")
+
+        if diagram.owner_id != current_user.id:
+            raise HTTPException(status_code=403 , detail="Not authorized to access this diagram")
 
         diagram.svg_content = svg_code
         diagram.plantuml_code = request.diagram_code

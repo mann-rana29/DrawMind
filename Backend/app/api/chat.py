@@ -1,9 +1,10 @@
 from fastapi import APIRouter, HTTPException , Depends
 from sqlalchemy import select
 from app.database import get_db , AsyncSession
-from app.models import Diagram, ChatHistory
+from app.models import Diagram, User, ChatHistory
 from app.schemas import Response
 from app.services import generate_code_llm,generate_prompt
+from app.auth.dependencies import get_current_user
 from pydantic import BaseModel
 
 router  = APIRouter()
@@ -12,12 +13,15 @@ class GenerateRequest(BaseModel):
     prompt: str  # The user's natural language prompt
 
 @router.post("/diagrams/{diagram_id}/chat", response_model=Response)
-async def continue_chat(diagram_id : int , request : GenerateRequest, db : AsyncSession = Depends(get_db)):
+async def continue_chat(diagram_id : int , request : GenerateRequest, db : AsyncSession = Depends(get_db) , current_user : User = Depends(get_current_user)):
     try:
         diagram = await db.get(Diagram,diagram_id)
         if not diagram:
             raise HTTPException(status_code=404, detail="Diagram not found")
-
+        
+        if diagram.owner_id != current_user.id : 
+            raise HTTPException(status_code=403, detail="Not authorized to access this diagram")
+        
         # Get only the last 3 messages for context (to keep prompt size manageable)
         chat_history = await db.execute(
             select(ChatHistory)

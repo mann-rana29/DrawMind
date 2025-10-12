@@ -3,7 +3,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from app.database import get_db
 from app.services import generate_code_llm, generate_prompt
-from app.models import Diagram , ChatHistory
+from app.models import Diagram , ChatHistory , User
+from app.auth.dependencies import get_current_user
 from app.schemas import Response
 from pydantic import BaseModel
 
@@ -13,7 +14,7 @@ class GenerateRequest(BaseModel):
     prompt: str  # The user's natural language prompt
 
 @router.post("/generate", response_model=Response)
-async def generate_code(request: GenerateRequest , db : AsyncSession = Depends(get_db)):
+async def generate_code(request: GenerateRequest , db : AsyncSession = Depends(get_db) , current_user : User = Depends(get_current_user)):
     """
     Generate UML diagram code from natural language prompt.
     This endpoint accepts a prompt and returns generated PlantUML code.
@@ -24,7 +25,7 @@ async def generate_code(request: GenerateRequest , db : AsyncSession = Depends(g
         generated_code = generate_code_llm(optimized_prompt)
 
         diagram = Diagram(
-            owner_id = 1,
+            owner_id = current_user.id,
             title = request.prompt,
             plantuml_code = generated_code,
             svg_content = None
