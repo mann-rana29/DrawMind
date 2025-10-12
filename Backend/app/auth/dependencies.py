@@ -14,9 +14,9 @@ async def get_current_user(credentials : HTTPAuthorizationCredentials = Depends(
 
     token_data = verify_token(token)
     if not token_data:
-        raise HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials" , headers= {"WW-Authenticate" : "Bearer"})
+        raise HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials" , headers= {"WWW-Authenticate" : "Bearer"})
     
-    result = db.execute(
+    result = await db.execute(
         select(User).filter(User.id == token_data["user_id"])
     )
     user = result.scalar_one_or_none()
