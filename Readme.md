@@ -5,145 +5,255 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.116.1-green.svg)](https://fastapi.tiangolo.com/)
+[![JWT Auth](https://img.shields.io/badge/Auth-JWT-orange.svg)](https://jwt.io/)
+[![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-blue.svg)](https://www.postgresql.org/)
 
-DrawMind is a modern, full-stack platform for generating, editing, and visualizing UML diagrams from natural language prompts. Powered by advanced LLMs and seamless PlantUML integration, DrawMind empowers users to create and modify diagrams effortlessly—no technical expertise required. The project is architected for scalability, extensibility, and rapid development, with a robust backend and a user-friendly frontend (coming soon).
+**DrawMind** is an intelligent, AI-powered platform that revolutionizes UML diagram creation through natural language processing. Transform your ideas into professional diagrams instantly using conversational prompts, edit them with simple descriptions, and share them seamlessly. Built with enterprise-grade architecture, complete authentication system, and scalable cloud infrastructure.
 
-## ✨ Features
+> **🎉 Latest Update:** Full authentication system implemented with JWT tokens, user management, and multi-user support!
 
-- 🤖 **LLM-Powered Generation**: Generate UML diagrams from natural language prompts using Google Gemini
-- 📝 **Natural Language Editing**: Edit diagrams by describing changes in plain English
-- 🖼️ **SVG Rendering**: Render diagrams to high-quality SVG using Kroki
-- 🔒 **Secure Authentication**: JWT-based user authentication and registration
-- 🧩 **Modular Architecture**: Clean separation of services, schemas, and APIs for easy extension
-- ✅ **Robust Validation**: Pydantic models for type-safe data validation
-- 🌐 **Cloud Database**: PostgreSQL integration with Supabase or Neon
-- 🚀 **FastAPI Backend**: High-performance async API with automatic OpenAPI docs
+## 🌟 What Makes DrawMind Special?
 
-## 📁 Project Structure
+- **💬 Conversational Interface**: "Create a login system class diagram" → Professional UML diagram
+- **🔄 Natural Language Editing**: "Add a password reset feature" → Diagram automatically updated  
+- **🔐 Enterprise Security**: JWT authentication, user sessions, and data isolation
+- **⚡ Real-time Processing**: Powered by Google Gemini AI for instant diagram generation
+- **🎨 High-Quality Output**: Professional SVG diagrams via Kroki integration
+- **🌐 Multi-User Ready**: Complete user management and diagram ownership
+
+## ✨ Core Features
+
+### 🤖 AI-Powered Diagram Generation
+- **Natural Language Processing**: Convert plain English descriptions into UML diagrams
+- **Google Gemini Integration**: Advanced LLM for context-aware diagram creation
+- **Multiple Diagram Types**: Class, sequence, use case, and activity diagrams
+
+### 🔐 Complete Authentication System
+- **User Registration & Login**: Secure account creation with email validation
+- **JWT Token Authentication**: Stateless, secure API access
+- **Password Security**: BCrypt hashing with 72-byte limit handling
+- **User Session Management**: Token-based authentication for all endpoints
+
+### 📝 Intelligent Diagram Editing
+- **Conversational Updates**: "Add a new method to the User class"
+- **Context-Aware Changes**: AI understands existing diagram structure
+- **Version History**: Track changes and iterations (coming soon)
+
+### 🎨 Professional Rendering
+- **High-Quality SVG Output**: Crisp, scalable diagrams via Kroki
+- **Multiple Export Formats**: SVG, PNG, PDF support
+- **Custom Styling**: Configurable themes and layouts
+
+### 🏗️ Enterprise Architecture
+- **Async FastAPI Backend**: High-performance, production-ready API
+- **PostgreSQL Database**: Reliable data persistence with Neon cloud database
+- **Modular Design**: Clean separation of concerns for easy maintenance
+- **Comprehensive Error Handling**: Graceful failure management and recovery
+
+## 📁 Project Architecture
 
 ```
-drawmind/
-├── frontend/          # React/Next.js frontend (coming soon)
-├── Backend/
-│   ├── app/
-│   │   ├── api/           # FastAPI route handlers
-│   │   ├── services/      # Business logic (LLM, Kroki, etc.)
-│   │   ├── schemas/       # Pydantic models
-│   │   └── main.py        # FastAPI app entry point
-│   ├── requirements.txt   # Python dependencies
-│   └── .env.example       # Environment variables template
-├── assets/            # Screenshots, demos, logos
-├── tests/             # Unit and integration tests
-└── docs/              # Additional documentation
+📦 DrawMind/
+├── 🖥️ frontend/                    # React frontend (Next.js - coming soon)
+├── 🔧 Backend/
+│   ├── 📱 app/
+│   │   ├── 🛣️ api/                 # REST API endpoints
+│   │   │   ├── auth.py            # 🔐 Authentication (register, login, /me)
+│   │   │   ├── generate_code.py   # 🤖 AI diagram generation
+│   │   │   ├── chat.py            # 💬 Conversational editing
+│   │   │   └── render.py          # 🎨 SVG rendering via Kroki
+│   │   ├── 🔧 services/           # Business logic layer
+│   │   │   ├── llm_service.py     # 🧠 Google Gemini integration
+│   │   │   ├── kroki_service.py   # 🖼️ Diagram rendering
+│   │   │   └── export_service.py  # 📤 File export utilities
+│   │   ├── 🔐 auth/               # Authentication system
+│   │   │   ├── auth.py            # JWT token management
+│   │   │   ├── password.py        # BCrypt password hashing
+│   │   │   └── dependencies.py    # Auth middleware
+│   │   ├── 📋 schemas/            # Pydantic data models
+│   │   │   ├── auth_schema.py     # User, login, token models
+│   │   │   ├── diagram_schema.py  # Diagram data structures
+│   │   │   └── response_schema.py # API responses
+│   │   ├── 🗄️ models.py           # SQLAlchemy database models
+│   │   ├── 💾 database.py         # Database connection & sessions
+│   │   └── 🚀 main.py             # FastAPI application entry
+│   ├── 📦 requirements.txt        # Python dependencies
+│   └── ⚙️ .env.example           # Environment configuration template
+├── 📚 docs/                       # Documentation & guides
+├── 🧪 tests/                      # Unit & integration tests
+└── 📸 assets/                     # Screenshots, demos, branding
 ```
 
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
-### Backend
-- **Python 3.10+**
-- **FastAPI** - Modern, fast web framework
-- **Pydantic** - Data validation and serialization
-- **SQLAlchemy** - ORM for database operations
-- **Google GenAI (Gemini)** - LLM integration
-- **PlantUML + Kroki** - Diagram generation and rendering
-- **JWT/OAuth2** - Authentication
-- **PostgreSQL** - Database (via Supabase/Neon)
+### 🔧 Backend (Production Ready)
+| Technology | Purpose | Version |
+|------------|---------|---------|
+| **Python** | Core language | 3.10+ |
+| **FastAPI** | Web framework | 0.116.1 |
+| **SQLAlchemy** | ORM & database | 2.0+ (Async) |
+| **PostgreSQL** | Primary database | Cloud (Neon) |
+| **Google Gemini** | AI/LLM integration | Latest API |
+| **Kroki** | Diagram rendering | Cloud service |
+| **JWT/BCrypt** | Authentication | python-jose + bcrypt |
+| **Pydantic** | Data validation | 2.11+ |
+| **Uvicorn** | ASGI server | Production ready |
 
-### Frontend (Planned)
-- **React/Next.js** - UI framework
-- **TypeScript** - Type-safe JavaScript
-- **Tailwind CSS** - Utility-first CSS framework
+### 🎨 Frontend (Coming Soon)
+| Technology | Purpose | Status |
+|------------|---------|--------|
+| **Next.js 14** | React framework | Planned |
+| **TypeScript** | Type safety | Planned |
+| **Tailwind CSS** | Styling | Planned |
+| **Shadcn/ui** | Component library | Planned |
+| **React Query** | Data fetching | Planned |
 
-## 🚦 Getting Started
+### ☁️ Infrastructure
+- **Database**: Neon PostgreSQL (Serverless)
+- **Deployment**: Railway/Vercel (Planned)
+- **CI/CD**: GitHub Actions (Planned)
+- **Monitoring**: Sentry integration (Available)
 
-### Prerequisites
-- Python 3.10 or higher
-- Git
-- A Supabase or Neon account for database
+## � Quick Start Guide
 
-### Backend Setup
+### 📋 Prerequisites
+- **Python 3.10+** installed
+- **Git** for version control
+- **Neon Account** for PostgreSQL database ([Get one free](https://neon.tech/))
+- **Google AI API Key** for Gemini ([Get yours here](https://makersuite.google.com/app/apikey))
 
-1. **Clone the repository**
+### ⚡ One-Command Setup
+
+```bash
+# Clone and setup in one go
+git clone https://github.com/mann-rana29/DrawMind.git
+cd DrawMind/Backend
+python -m venv venv
+# Windows
+venv\Scripts\activate && pip install -r requirements.txt
+# macOS/Linux  
+source venv/bin/activate && pip install -r requirements.txt
+```
+
+### 🔧 Configuration
+
+1. **Create your environment file**
    ```bash
-   git clone https://github.com/mann-rana29/DrawMind.git
-   cd DrawMind
+   cp .env.example .env
    ```
 
-2. **Create and activate a virtual environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+2. **Configure your `.env` file**
+   ```env
+   # 🗄️ Database (Get from Neon.tech)
+   DATABASE_URL=postgresql+asyncpg://user:pass@host/db
+   
+   # 🤖 AI Integration (Get from Google AI)
+   GEMINI_API_KEY=your_gemini_api_key_here
+   
+   # 🔐 Security (Generate strong keys)
+   SECRET_KEY=your-super-secret-jwt-key
+   JWT_SECRET_KEY=your-jwt-specific-secret
+   
+   # 🎨 Services
+   KROKI_URL=https://kroki.io
    ```
 
-3. **Install dependencies**
+3. **Launch the application**
    ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Configure environment variables**
-   ```bash
-   cp Backend/.env.example Backend/.env
-   # Edit .env with your API keys and database URL
-   ```
-
-5. **Set up your database**
-   - Create a PostgreSQL instance on [Supabase](https://supabase.com/) or [Neon](https://neon.tech/)
-   - Update your database URL in `.env`
-
-6. **Run the FastAPI app**
-   ```bash
-   cd Backend
    uvicorn app.main:app --reload
    ```
 
-7. **Access the API**
-   - OpenAPI docs: http://localhost:8000/docs
-   - ReDoc: http://localhost:8000/redoc
+### 🎯 First Steps
 
-### Frontend Setup (Coming Soon)
-```bash
-cd frontend
-npm install
-npm run dev
-```
+1. **Visit the API docs**: http://localhost:8000/docs
+2. **Register a new user** via `/api/v1/auth/register`
+3. **Login** to get your JWT token via `/api/v1/auth/login`
+4. **Authorize** in the docs using the 🔒 button
+5. **Generate your first diagram** via `/api/v1/generate`
 
-## 📡 API Documentation
+### 🖥️ API Playground
 
-### Authentication Endpoints
+The FastAPI interactive docs provide a complete playground:
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+- **OpenAPI JSON**: http://localhost:8000/openapi.json
+
+## 📡 API Reference
+
+### 🔐 Authentication Endpoints
+
+#### Register New User
 ```http
-POST /auth/register
+POST /api/v1/auth/register
 Content-Type: application/json
 
 {
   "username": "johndoe",
-  "email": "john@example.com",
+  "email": "john@example.com", 
   "password": "securepassword123"
+}
+
+# Response
+{
+  "id": 1,
+  "username": "johndoe"
 }
 ```
 
+#### User Login
 ```http
-POST /auth/login
+POST /api/v1/auth/login
 Content-Type: application/json
 
 {
   "username": "johndoe",
   "password": "securepassword123"
 }
+
+# Response
+{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "token_type": "bearer"
+}
 ```
 
-### Diagram Endpoints
+#### Get Current User
 ```http
-POST /diagrams/generate
+GET /api/v1/auth/me
+Authorization: Bearer <your_jwt_token>
+
+# Response
+{
+  "id": 1,
+  "username": "johndoe"
+}
+```
+
+### 🤖 AI Diagram Generation
+
+#### Generate New Diagram
+```http
+POST /api/v1/generate
 Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "prompt": "Create a class diagram for a library management system"
+  "prompt": "Create a class diagram for a library management system with books, members, and loans"
+}
+
+# Response
+{
+  "diagram_id": 123,
+  "plantuml_code": "@startuml\nclass Book {\n  +title: String\n  +author: String\n}\nclass Member {\n  +name: String\n  +email: String\n}\nclass Loan {\n  +date: Date\n  +returnDate: Date\n}\nBook ||--o{ Loan\nMember ||--o{ Loan\n@enduml",
+  "explanation": "Created a library management system with three main classes..."
 }
 ```
 
+### 🎨 Diagram Rendering
+
+#### Render to SVG
 ```http
-POST /diagrams/render
+POST /api/v1/render
 Authorization: Bearer <token>
 Content-Type: application/json
 
@@ -151,40 +261,94 @@ Content-Type: application/json
   "diagram_code": "@startuml\nclass Book {}\n@enduml",
   "diagram_type": "plantuml"
 }
+
+# Response
+{
+  "svg_content": "<svg xmlns='http://www.w3.org/2000/svg'>...</svg>",
+  "success": true
+}
 ```
 
+### 💬 Conversational Editing
+
+#### Continue Diagram Chat
 ```http
-PUT /diagrams/{diagram_id}/edit
+POST /api/v1/chat/{diagram_id}
 Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "edit_prompt": "Add a new class called 'Member' with attributes name and email"
+  "message": "Add a new class called 'Author' and connect it to Book"
+}
+
+# Response
+{
+  "response": "I've added an Author class with a relationship to Book...",
+  "updated_code": "@startuml\nclass Book {}\nclass Author {}\nAuthor ||--o{ Book\n@enduml"
 }
 ```
 
-## 🔧 Environment Variables
+## ⚙️ Environment Configuration
 
-Create a `.env` file in the `Backend/` directory:
+### 📝 Complete `.env` Setup
+
+Create a `.env` file in the `Backend/` directory with these variables:
 
 ```env
-# Database
-DATABASE_URL=postgresql://user:password@host:port/database
+# 🗄️ DATABASE CONFIGURATION
+DATABASE_URL=postgresql+asyncpg://username:password@host:port/database_name
+# Example: postgresql+asyncpg://user:pass@ep-cool-cloud-123456.us-east-1.aws.neon.tech/drawmind
 
-# LLM API
-GEMINI_API_KEY=your_gemini_api_key_here
+# 🤖 AI/LLM INTEGRATION  
+GEMINI_API_KEY=your_google_gemini_api_key_here
+# Get from: https://makersuite.google.com/app/apikey
 
-# Kroki Service
-KROKI_URL=https://kroki.io
-
-# JWT
-SECRET_KEY=your_secret_key_here
+# 🔐 AUTHENTICATION & SECURITY
+SECRET_KEY=your-super-long-secret-key-for-general-app-security
+JWT_SECRET_KEY=your-specific-jwt-token-signing-key
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 
-# App Settings
+# 🎨 EXTERNAL SERVICES
+KROKI_URL=https://kroki.io
+# Alternative: http://localhost:8080 (if self-hosting Kroki)
+
+# 🔧 APPLICATION SETTINGS
 DEBUG=True
+LOG_LEVEL=INFO
+ENVIRONMENT=development
+
+# 📊 OPTIONAL: MONITORING & ANALYTICS
+SENTRY_DSN=your_sentry_dsn_for_error_tracking
 ```
+
+### 🔑 How to Get API Keys
+
+1. **Google Gemini API Key**:
+   - Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Sign in with Google account
+   - Click "Create API Key"
+   - Copy and paste into your `.env`
+
+2. **Neon Database URL**:
+   - Sign up at [Neon.tech](https://neon.tech/)
+   - Create a new project
+   - Copy the connection string from your dashboard
+   - Replace `postgresql://` with `postgresql+asyncpg://`
+
+3. **JWT Secret Keys**:
+   ```bash
+   # Generate secure random keys
+   python -c "import secrets; print(secrets.token_urlsafe(32))"
+   ```
+
+### 🔒 Security Best Practices
+
+- ✅ Use different keys for `SECRET_KEY` and `JWT_SECRET_KEY`
+- ✅ Never commit `.env` file to version control
+- ✅ Use strong, randomly generated secrets (32+ characters)
+- ✅ Set appropriate token expiration times
+- ✅ Enable SSL/TLS in production (`ssl=require` in DATABASE_URL)
 
 ## 🧪 Testing
 
@@ -215,15 +379,38 @@ docker run -p 8000:8000 drawmind
 - **Database**: Use Supabase or Neon for managed PostgreSQL
 - **Frontend**: Deploy to Vercel or Netlify
 
-## 🗺️ Roadmap
+## 🗺️ Development Roadmap
 
-- [ ] Frontend UI with React/Next.js
-- [ ] Real-time diagram editing with WebSockets
-- [ ] Support for Mermaid diagrams
-- [ ] Diagram sharing and collaboration features
-- [ ] Mobile app with React Native
-- [ ] Integration with popular design tools
-- [ ] Advanced LLM fine-tuning for diagram generation
+### ✅ Completed (v1.0)
+- [x] **Core AI Engine**: Google Gemini integration for diagram generation
+- [x] **Authentication System**: JWT-based user registration, login, and session management
+- [x] **Database Layer**: PostgreSQL with SQLAlchemy ORM and async support
+- [x] **API Framework**: FastAPI with automatic OpenAPI documentation
+- [x] **Diagram Rendering**: Kroki integration for high-quality SVG output
+- [x] **Conversational Editing**: Natural language diagram modifications
+- [x] **Security**: BCrypt password hashing, secure token management
+- [x] **Error Handling**: Comprehensive error management and recovery
+
+### 🚧 In Progress (v1.1)
+- [ ] **Frontend Development**: React/Next.js UI implementation
+- [ ] **User Experience**: Drag-and-drop diagram editor
+- [ ] **Enhanced Workflows**: Multi-step diagram creation processes
+
+### 🎯 Upcoming (v1.2-1.5)
+- [ ] **Real-time Collaboration**: WebSocket-based shared editing
+- [ ] **Version Control**: Diagram history and branching
+- [ ] **Export Options**: PDF, PNG, and various format support
+- [ ] **Template Library**: Pre-built diagram templates
+- [ ] **Team Features**: Shared workspaces and permissions
+- [ ] **Mobile App**: React Native mobile application
+
+### 🚀 Future Vision (v2.0+)
+- [ ] **Multi-LLM Support**: OpenAI GPT, Claude, and other AI models
+- [ ] **Mermaid Integration**: Support for Mermaid diagram syntax
+- [ ] **Enterprise Features**: SSO, audit logs, advanced analytics
+- [ ] **API Integrations**: Confluence, Notion, GitHub, GitLab
+- [ ] **Advanced AI**: Fine-tuned models for specific diagram types
+- [ ] **3D Diagrams**: Interactive 3D architectural diagrams
 
 ## 🤝 Contributing
 
@@ -245,13 +432,70 @@ We welcome contributions from the community! Here's how you can help:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📞 Contact
+## 🎯 Use Cases & Examples
 
-- **Author**: Mann Rana
+### 🏢 Business Applications
+- **System Architecture**: Generate microservices diagrams from requirements
+- **Database Design**: Create ERD diagrams from business rules
+- **Process Flows**: Document business processes visually
+- **API Documentation**: Visualize REST API relationships
+
+### 🎓 Educational Use
+- **Software Engineering**: Teach UML concepts interactively
+- **System Design**: Practice system architecture patterns
+- **Code Documentation**: Generate diagrams from existing codebases
+- **Project Planning**: Visualize project structures and dependencies
+
+### 👨‍� Developer Workflow
+- **Code Review**: Generate diagrams to explain complex features
+- **Documentation**: Auto-generate architecture documentation
+- **Onboarding**: Create visual guides for new team members
+- **Technical Debt**: Visualize legacy system structures
+
+## 🏆 Key Achievements
+
+- 🚀 **Production-Ready Backend**: Complete FastAPI application with enterprise features
+- 🔐 **Secure Authentication**: JWT-based system with BCrypt password protection
+- 🤖 **AI Integration**: Advanced Google Gemini AI for intelligent diagram generation
+- 📊 **Scalable Architecture**: Async database operations with connection pooling
+- 📖 **Comprehensive Documentation**: Complete API docs with interactive playground
+- 🧪 **Error Resilience**: Robust error handling for production environments
+
+## 📞 Connect & Contribute
+
+### 👨‍💻 Author
+**Mann Rana** - Full Stack Developer & AI Enthusiast
 - **GitHub**: [@mann-rana29](https://github.com/mann-rana29)
-- **Email**: [Mann.120528@stu.upes.ac.in]
-- **Project Link**: [https://github.com/mann-rana29/DrawMind](https://github.com/mann-rana29/DrawMind)
+- **Email**: Mann.120528@stu.upes.ac.in
+- **LinkedIn**: [Connect with me](https://linkedin.com/in/mann-rana29)
+
+### 🔗 Project Links
+- **Repository**: [https://github.com/mann-rana29/DrawMind](https://github.com/mann-rana29/DrawMind)
+- **Issues**: [Report bugs or request features](https://github.com/mann-rana29/DrawMind/issues)
+- **Discussions**: [Join the community](https://github.com/mann-rana29/DrawMind/discussions)
+
+### 💬 Community
+- 🌟 **Star this repo** if you find it useful
+- 🐛 **Report issues** to help improve the project  
+- 💡 **Suggest features** for future development
+- 🤝 **Contribute code** to make DrawMind even better
 
 ---
 
-<p align="center">Made with ❤️ and lots of ☕</p>
+<div align="center">
+
+### 🙏 Acknowledgments
+
+Special thanks to:
+- **Google AI** for Gemini API access
+- **Neon** for serverless PostgreSQL
+- **Kroki** for diagram rendering services
+- **FastAPI Community** for the amazing framework
+
+---
+
+**Made with ❤️, ☕, and lots of 🤖 AI magic**
+
+*"Transforming ideas into diagrams, one conversation at a time"*
+
+</div>
