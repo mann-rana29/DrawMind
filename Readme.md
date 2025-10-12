@@ -54,34 +54,31 @@
 
 ```
 📦 DrawMind/
-├── 🖥️ frontend/                    # React frontend (Next.js - coming soon)
-├── 🔧 Backend/
-│   ├── 📱 app/
-│   │   ├── 🛣️ api/                 # REST API endpoints
-│   │   │   ├── auth.py            # 🔐 Authentication (register, login, /me)
-│   │   │   ├── generate_code.py   # 🤖 AI diagram generation
-│   │   │   ├── chat.py            # 💬 Conversational editing
-│   │   │   └── render.py          # 🎨 SVG rendering via Kroki
-│   │   ├── 🔧 services/           # Business logic layer
-│   │   │   ├── llm_service.py     # 🧠 Google Gemini integration
-│   │   │   ├── kroki_service.py   # 🖼️ Diagram rendering
-│   │   │   └── export_service.py  # 📤 File export utilities
-│   │   ├── 🔐 auth/               # Authentication system
-│   │   │   ├── auth.py            # JWT token management
-│   │   │   ├── password.py        # BCrypt password hashing
-│   │   │   └── dependencies.py    # Auth middleware
-│   │   ├── 📋 schemas/            # Pydantic data models
-│   │   │   ├── auth_schema.py     # User, login, token models
-│   │   │   ├── diagram_schema.py  # Diagram data structures
-│   │   │   └── response_schema.py # API responses
-│   │   ├── 🗄️ models.py           # SQLAlchemy database models
-│   │   ├── 💾 database.py         # Database connection & sessions
-│   │   └── 🚀 main.py             # FastAPI application entry
-│   ├── 📦 requirements.txt        # Python dependencies
-│   └── ⚙️ .env.example           # Environment configuration template
-├── 📚 docs/                       # Documentation & guides
-├── 🧪 tests/                      # Unit & integration tests
-└── 📸 assets/                     # Screenshots, demos, branding
+├──🖥️ frontend/                    # React frontend (Next.js - coming soon)
+├──🔧 Backend/
+   ├──📱 app/
+   │   ├── 🛣️ api/                 # REST API endpoints
+   │   │   ├── auth.py            # 🔐 Authentication (register, login, /me)
+   │   │   ├── generate_code.py   # 🤖 AI diagram generation
+   │   │   ├── chat.py            # 💬 Conversational editing
+   │   │   └── render.py          # 🎨 SVG rendering via Kroki
+   │   ├── 🔧 services/           # Business logic layer
+   │   │   ├── llm_service.py     # 🧠 Google Gemini integration
+   │   │   ├── kroki_service.py   # 🖼️ Diagram rendering
+   │   │   └── export_service.py  # 📤 File export utilities
+   │   ├── 🔐 auth/               # Authentication system
+   │   │   ├── auth.py            # JWT token management
+   │   │   ├── password.py        # BCrypt password hashing
+   │   │   └── dependencies.py    # Auth middleware
+   │   ├── 📋 schemas/            # Pydantic data models
+   │   │   ├── auth_schema.py     # User, login, token models
+   │   │   ├── diagram_schema.py  # Diagram data structures
+   │   │   └── response_schema.py # API responses
+   │   ├── 🗄️ models.py           # SQLAlchemy database models
+   │   ├── 💾 database.py         # Database connection & sessions
+   │   └── 🚀 main.py             # FastAPI application entry
+   ├── 📦 requirements.txt        # Python dependencies
+   └── ⚙️ .env.example           # Environment configuration template
 ```
 
 ## 🛠️ Technology Stack
@@ -350,34 +347,6 @@ SENTRY_DSN=your_sentry_dsn_for_error_tracking
 - ✅ Set appropriate token expiration times
 - ✅ Enable SSL/TLS in production (`ssl=require` in DATABASE_URL)
 
-## 🧪 Testing
-
-```bash
-# Run unit tests
-pytest tests/
-
-# Run with coverage
-pytest --cov=app tests/
-
-# Run integration tests
-pytest tests/integration/
-```
-
-## 🚀 Deployment
-
-### Docker Deployment
-```bash
-# Build the image
-docker build -t drawmind .
-
-# Run the container
-docker run -p 8000:8000 drawmind
-```
-
-### Cloud Deployment
-- **Backend**: Deploy to Heroku, Railway, or Vercel
-- **Database**: Use Supabase or Neon for managed PostgreSQL
-- **Frontend**: Deploy to Vercel or Netlify
 
 ## 🗺️ Development Roadmap
 
@@ -396,21 +365,6 @@ docker run -p 8000:8000 drawmind
 - [ ] **User Experience**: Drag-and-drop diagram editor
 - [ ] **Enhanced Workflows**: Multi-step diagram creation processes
 
-### 🎯 Upcoming (v1.2-1.5)
-- [ ] **Real-time Collaboration**: WebSocket-based shared editing
-- [ ] **Version Control**: Diagram history and branching
-- [ ] **Export Options**: PDF, PNG, and various format support
-- [ ] **Template Library**: Pre-built diagram templates
-- [ ] **Team Features**: Shared workspaces and permissions
-- [ ] **Mobile App**: React Native mobile application
-
-### 🚀 Future Vision (v2.0+)
-- [ ] **Multi-LLM Support**: OpenAI GPT, Claude, and other AI models
-- [ ] **Mermaid Integration**: Support for Mermaid diagram syntax
-- [ ] **Enterprise Features**: SSO, audit logs, advanced analytics
-- [ ] **API Integrations**: Confluence, Notion, GitHub, GitLab
-- [ ] **Advanced AI**: Fine-tuned models for specific diagram types
-- [ ] **3D Diagrams**: Interactive 3D architectural diagrams
 
 ## 🤝 Contributing
 
@@ -464,10 +418,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Connect & Contribute
 
 ### 👨‍💻 Author
-**Mann Rana** - Full Stack Developer & AI Enthusiast
+**Mann Rana** 
 - **GitHub**: [@mann-rana29](https://github.com/mann-rana29)
 - **Email**: Mann.120528@stu.upes.ac.in
-- **LinkedIn**: [Connect with me](https://linkedin.com/in/mann-rana29)
+- **LinkedIn**: [Connect with me](https://www.linkedin.com/in/mann-rana-024331275/)
 
 ### 🔗 Project Links
 - **Repository**: [https://github.com/mann-rana29/DrawMind](https://github.com/mann-rana29/DrawMind)
