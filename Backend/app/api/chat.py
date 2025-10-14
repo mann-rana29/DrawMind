@@ -3,7 +3,7 @@ from sqlalchemy import select
 from app.database import get_db , AsyncSession
 from app.models import Diagram, User, ChatHistory
 from app.schemas import Response
-from app.services import generate_code_llm,generate_prompt
+from app.services import generate_code_llm,generate_prompt , kroki_rendering_svg
 from app.auth.dependencies import get_current_user
 from pydantic import BaseModel
 
@@ -53,8 +53,10 @@ async def continue_chat(diagram_id : int , request : GenerateRequest, db : Async
 
         optimized_prompt = generate_prompt(context)
         updated_code = generate_code_llm(optimized_prompt)
+        updated_diagram = kroki_rendering_svg(updated_code)
 
         diagram.plantuml_code = updated_code
+        diagram.svg_content = updated_diagram
 
         # Get the actual message count for proper ordering
         total_messages_result = await db.execute(
@@ -77,7 +79,8 @@ async def continue_chat(diagram_id : int , request : GenerateRequest, db : Async
             data = {
                 "diagram_id" : diagram_id,
                 "code" : updated_code,
-                "message_order": next_order
+                "message_order": next_order,
+                "svg_content" : updated_diagram
             },
             message = "Chat continued successfully"
         )
