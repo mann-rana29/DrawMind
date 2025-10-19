@@ -56,6 +56,9 @@ async def start_chat(request: ChatRequest, db: AsyncSession = Depends(get_db), c
                 "svg_content": svg_content,
                 "src": render_result["src"],
                 "kroki_url": render_result["kroki_url"],
+                "redirect_to_chat": True,  # Signal frontend to switch to chat mode
+                "chat_endpoint": f"/api/v1/diagrams/{diagram.id}/chat",  # Ready-to-use endpoint
+                "diagram_title": diagram.title,
                 "message": f"Created diagram: {diagram.title}"
             },
             message="New diagram created successfully"
@@ -138,6 +141,9 @@ async def continue_chat(diagram_id : int , request : ChatRequest, db : AsyncSess
                 "svg_content" : updated_diagram,
                 "src": render_result["src"],
                 "kroki_url": render_result["kroki_url"],
+                "is_continuation": True,  # Signal this is a chat continuation
+                "message_order": next_order,
+                "diagram_title": diagram.title,
                 "message": "Diagram updated successfully based on your request"
             },
             message = "Chat updated diagram successfully"
