@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Hero from "@/components/HeroSection/Hero";
 import Navbar from "@/components/Navbar/Navbar";
+import Faq from "@/components/FAQ/Faq";
 
 export default function Home() {
   return (
@@ -17,9 +18,10 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <div className="order border-accent w-full h-full">
+        <div className="w-full h-full">
           <Navbar/>
           <Hero/>
+          <Faq/>
         </div>
 
       </div>
