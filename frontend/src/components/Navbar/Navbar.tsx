@@ -18,7 +18,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex gap-2 items-center cursor-pointer">
           <div>
-            <Image src={logo} alt={"Logo"} className="object-cover size-12 lg:size-fit" />
+            <Image src={logo} alt={"Logo"} className="object-cover size-12" />
           </div>
           <div>
             <span className="lg:text-4xl text-2xl font-bold">DrawMind</span>
