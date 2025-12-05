@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import logo from "../../../public/logo.png";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,16 +15,19 @@ const Navbar = () => {
 
   return (
     <div className="relative">
-      <nav className="flex justify-between h-15 p-4 items-center">
+      <nav className="flex  justify-between h-15 p-4 items-center">
         {/* Logo */}
+        <Link href={"./"}>
         <div className="flex gap-2 items-center cursor-pointer">
+          
           <div>
             <Image src={logo} alt={"Logo"} className="object-cover size-12" />
           </div>
+          
           <div>
             <span className="lg:text-4xl text-2xl font-bold">DrawMind</span>
           </div>
-        </div>
+        </div></Link>
 
         {/* Desktop Navigation */}
         <div className="lg:flex gap-4 hidden">

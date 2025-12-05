@@ -11,6 +11,36 @@ interface Faq{
   answer : string
 }
 
+export interface CardProps{
+    id : number,
+    image : string,
+    type : string
+    
+}
+
+export const cardData : CardProps[] = [
+  {
+    id : 1,
+    image : "../../../public/class_dig.png",
+    type : "Class Diagram"
+  },
+  {
+    id : 2,
+    image : "../../../public/activity_dig.png",
+    type : "Activty Diagram"
+  },
+  {
+    id : 3,
+    image : "../../../public/sequence_dig.png",
+    type : "Sequence Diagram"
+  },
+  {
+    id : 4,
+    image : "../../../public/usecase_dig.png",
+    type : "Use Case Diagram"
+  }
+]
+
 export const faqData: Faq[] = [
   {
     id: 1,

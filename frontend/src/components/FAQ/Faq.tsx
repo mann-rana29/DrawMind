@@ -13,8 +13,8 @@ const Faq = () => {
     <div className="flex my-5 flex-col justify-center items-center">
         <div className="bg-tranparent w-[90%] h-full ">
             <div className="heading text-center">
-                <h1 className="text-3xl lg:text-5xl font-medium text-cyan-300">FAQ</h1>
-                <p className="mt-4 text-gray-300 font-medium">Have a question? Find our most commonly <br/> asked questions below.</p>
+                <h1 className="text-3xl lg:text-6xl font-medium text-cyan-500">FAQ</h1>
+                <p className="mt-3 lg:text-2xl text-gray-400 font-medium">Have a question? Find our most commonly <br/> asked questions below.</p>
             </div>
             <div className="questions my-6">
                 <Accordion type="single" collapsible className="flex flex-col gap-6">
