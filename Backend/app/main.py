@@ -17,6 +17,29 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    "http://localhost:3000",
+    "https://drawmind.onrender.com",
+    "https://draw-mind.vercel.app",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+async def root():
+    return {
+        "message": "Welcome to DrawMind API",
+        "status": "running",
+        "documentation": "/docs"
+    }
 
 app.include_router(
     generate_router,
