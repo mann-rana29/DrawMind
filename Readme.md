@@ -50,37 +50,6 @@
 - **Modular Design**: Clean separation of concerns for easy maintenance
 - **Comprehensive Error Handling**: Graceful failure management and recovery
 
-## 📁 Project Architecture
-
-```
-📦 DrawMind/
-├──🖥️ frontend/                    # React frontend (Next.js - coming soon)
-├──🔧 Backend/
-   ├──📱 app/
-   │   ├── 🛣️ api/                 # REST API endpoints
-   │   │   ├── auth.py            # 🔐 Authentication (register, login, /me)
-   │   │   ├── generate_code.py   # 🤖 AI diagram generation
-   │   │   ├── chat.py            # 💬 Conversational editing
-   │   │   └── render.py          # 🎨 SVG rendering via Kroki
-   │   ├── 🔧 services/           # Business logic layer
-   │   │   ├── llm_service.py     # 🧠 Google Gemini integration
-   │   │   ├── kroki_service.py   # 🖼️ Diagram rendering
-   │   │   └── export_service.py  # 📤 File export utilities
-   │   ├── 🔐 auth/               # Authentication system
-   │   │   ├── auth.py            # JWT token management
-   │   │   ├── password.py        # BCrypt password hashing
-   │   │   └── dependencies.py    # Auth middleware
-   │   ├── 📋 schemas/            # Pydantic data models
-   │   │   ├── auth_schema.py     # User, login, token models
-   │   │   ├── diagram_schema.py  # Diagram data structures
-   │   │   └── response_schema.py # API responses
-   │   ├── 🗄️ models.py           # SQLAlchemy database models
-   │   ├── 💾 database.py         # Database connection & sessions
-   │   └── 🚀 main.py             # FastAPI application entry
-   ├── 📦 requirements.txt        # Python dependencies
-   └── ⚙️ .env.example           # Environment configuration template
-```
-
 ## 🛠️ Technology Stack
 
 ### 🔧 Backend (Production Ready)
@@ -123,15 +92,6 @@
 - [ ] **Enhanced Workflows**: Multi-step diagram creation processes
 
 
-## 🤝 Contributing
-
-We welcome contributions from the community! Here's how you can help:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 📝 License
 
