@@ -1,0 +1,13 @@
+name: Render keep-alive ping
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  curl-website:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render service
+        run: curl -I https://drawmind.onrender.com/
