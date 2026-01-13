@@ -14,13 +14,14 @@ router = APIRouter()
 @router.post("/register" , response_model= UserOut)
 async def register(user_data : UserRegister , db : AsyncSession = Depends(get_db)):
     try:
+        # Check for existing username or email
         existing_user = await db.execute(
-        select(User).filter(User.username == user_data.username)
+            select(User).filter((User.username == user_data.username) | (User.email == user_data.email))
         )
         if existing_user.scalar_one_or_none():
             raise HTTPException(
                 status_code= status.HTTP_400_BAD_REQUEST,
-                detail = "Username already registered"
+                detail = "Username or Email already registered"
             )
 
         hashed_password = hash_pass(user_data.password)
@@ -36,6 +37,8 @@ async def register(user_data : UserRegister , db : AsyncSession = Depends(get_db
         await db.refresh(new_user)
 
         return new_user
+    except HTTPException as he:
+        raise he
     except ValueError as e:
         if "password cannot be longer than 72 bytes" in str(e):
             raise HTTPException(
@@ -44,7 +47,14 @@ async def register(user_data : UserRegister , db : AsyncSession = Depends(get_db
             )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An error occurred during registration"
+            detail=f"ValueError during registration: {str(e)}"
+        )
+    except Exception as e:
+        # Catch all other errors (e.g. DB connection) and return message
+        print(f"Registration Failed: {str(e)}") # Log to server console
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Registration failed: {str(e)}"
         )
 
 @router.post("/login", response_model=Token)
