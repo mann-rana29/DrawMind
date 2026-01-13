@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Create an Axios instance with base URL
 const api = axios.create({
-  baseURL: '/api/v1', // Proxy will handle this or we can set full URL
+  baseURL: 'https://drawmind.onrender.com/api/v1', // Proxy will handle this or we can set full URL
   headers: {
     'Content-Type': 'application/json',
   },

@@ -52,7 +52,6 @@ export default function DashboardPage() {
         } catch (error) {
             console.error('Failed to create diagram', error);
             alert('Failed to create diagram. Please try again.');
-        } finally {
             setCreating(false);
         }
     };

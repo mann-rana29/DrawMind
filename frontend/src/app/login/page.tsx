@@ -38,8 +38,23 @@ export default function LoginPage() {
             const res = await api.post('/auth/login', formData);
             login(res.data.access_token);
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Failed to login');
-        } finally {
+            console.error('Login error:', err);
+            let errorMessage = 'Failed to login';
+
+            if (err.response?.data?.detail) {
+                const detail = err.response.data.detail;
+                if (typeof detail === 'string') {
+                    errorMessage = detail;
+                } else if (Array.isArray(detail)) {
+                    errorMessage = detail.map((e: any) => e.msg || JSON.stringify(e)).join(', ');
+                } else if (typeof detail === 'object') {
+                    errorMessage = JSON.stringify(detail);
+                }
+            } else if (err.message) {
+                errorMessage = err.message;
+            }
+
+            setError(errorMessage);
             setLoading(false);
         }
     };

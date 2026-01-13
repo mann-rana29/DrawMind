@@ -37,8 +37,27 @@ export default function RegisterPage() {
             // After register, redirect to login
             router.push('/login?registered=true');
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Failed to register');
-        } finally {
+            console.error('Registration error full object:', err);
+            console.error('Response data:', err.response?.data);
+
+            let errorMessage = 'Failed to register';
+
+            if (err.response?.data?.detail) {
+                const detail = err.response.data.detail;
+                if (typeof detail === 'string') {
+                    errorMessage = detail;
+                } else if (Array.isArray(detail)) {
+                    errorMessage = detail.map((e: any) => e.msg || JSON.stringify(e)).join(', ');
+                } else if (typeof detail === 'object') {
+                    errorMessage = JSON.stringify(detail);
+                } else {
+                    errorMessage = String(detail);
+                }
+            } else if (err.message) {
+                errorMessage = err.message;
+            }
+
+            setError(errorMessage);
             setLoading(false);
         }
     };
