@@ -86,12 +86,12 @@ export const ChatInterface = ({ onSendMessage, messages: initialMessages, isLoad
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder="Type your instruction..."
-                        className="bg-neutral-950 border-neutral-800 focus-visible:ring-indigo-500"
+                        className="bg-neutral-950 border-neutral-800 text-white focus-visible:ring-indigo-500"
                         disabled={isLoading}
                     />
                     <Button
                         type="submit"
-                        size="md"
+                        size="default"
                         disabled={isLoading || !input.trim()}
                         className="bg-indigo-600 hover:bg-indigo-500 text-white shrink-0"
                     >

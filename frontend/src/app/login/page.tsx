@@ -57,7 +57,7 @@ export default function LoginPage() {
 
                     <form onSubmit={handleSubmit} className="space-y-6 mt-8">
                         <Input
-                            label="Username"
+                            // label="Username"
                             type="text"
                             value={formData.username}
                             onChange={(e) => setFormData({ ...formData, username: e.target.value })}
@@ -66,7 +66,7 @@ export default function LoginPage() {
                         />
 
                         <Input
-                            label="Password"
+                            // label="Password"
                             type="password"
                             value={formData.password}
                             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
