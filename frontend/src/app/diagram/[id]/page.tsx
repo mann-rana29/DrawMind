@@ -38,21 +38,17 @@ export default function DiagramPage() {
     }, [user, authLoading, router]);
 
     useEffect(() => {
-        if (id) {
+        if (id && user?.id) {
             const diagramId = parseInt(Array.isArray(id) ? id[0] : id);
-            const localData = getLocalDiagrams().find(d => d.id === diagramId);
+            const localData = getLocalDiagrams(user.id).find(d => d.id === diagramId);
             if (localData) {
                 setDiagram(localData);
-                // Initial message history? 
-                // We can't fetch it easily without recreating context, but we can start fresh or 
-                // if we just created it, maybe we want to show the initial prompt?
-                // Let's rely on the user seeing the diagram.
             } else {
                 // Diagram not found in local store
                 router.push('/dashboard');
             }
         }
-    }, [id, router]);
+    }, [id, router, user]);
 
     const handleSendMessage = async (text: string) => {
         if (!diagram) return;
@@ -72,7 +68,10 @@ export default function DiagramPage() {
                 ...diagram,
                 svgContent: svg_content,
             };
-            saveLocalDiagram(updatedDiagram);
+
+            if (user?.id) {
+                saveLocalDiagram(user.id, updatedDiagram);
+            }
             setDiagram(updatedDiagram);
 
             setMessages(prev => [...prev, { role: 'assistant', content: message || "Diagram updated" }]);

@@ -27,8 +27,10 @@ export default function DashboardPage() {
 
     useEffect(() => {
         // Load diagrams
-        setDiagrams(getLocalDiagrams());
-    }, []);
+        if (user?.id) {
+            setDiagrams(getLocalDiagrams(user.id));
+        }
+    }, [user]);
 
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -47,7 +49,9 @@ export default function DashboardPage() {
                 svgContent: svg_content,
             };
 
-            saveLocalDiagram(newDiagram);
+            if (user?.id) {
+                saveLocalDiagram(user.id, newDiagram);
+            }
             router.push(`/diagram/${diagram_id}`);
         } catch (error) {
             console.error('Failed to create diagram', error);
@@ -77,7 +81,7 @@ export default function DashboardPage() {
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
                                 placeholder="e.g. A library management system class diagram"
-                                className="h-12 bg-neutral-900 border-neutral-700 text-white"
+                                className="h-12 w-[200px] sm:w-[450px] bg-neutral-900 border-neutral-700 text-white"
                             />
                             <Button type="submit" size="lg" isLoading={creating} className="shrink-0 h-12 bg-cyan-500 hover:bg-cyan-600 text-white border-2 border-cyan-400/20 font-semibold shadow-[0_0_15px_rgba(6,182,212,0.5)] transition-all duration-300">
                                 Generate <Plus className="ml-2 w-4 h-4" />

@@ -10,11 +10,11 @@ export interface LocalDiagram {
     plantumlCode?: string;
 }
 
-const LOCAL_STORAGE_KEY = 'drawmind_diagrams';
+const getStorageKey = (userId: number | string) => `drawmind_diagrams_${userId}`;
 
-export const getLocalDiagrams = (): LocalDiagram[] => {
-    if (typeof window === 'undefined') return [];
-    const startData = localStorage.getItem(LOCAL_STORAGE_KEY);
+export const getLocalDiagrams = (userId: number | string): LocalDiagram[] => {
+    if (typeof window === 'undefined' || !userId) return [];
+    const startData = localStorage.getItem(getStorageKey(userId));
     if (!startData) return [];
     try {
         return JSON.parse(startData);
@@ -24,8 +24,9 @@ export const getLocalDiagrams = (): LocalDiagram[] => {
     }
 };
 
-export const saveLocalDiagram = (diagram: LocalDiagram) => {
-    const current = getLocalDiagrams();
+export const saveLocalDiagram = (userId: number | string, diagram: LocalDiagram) => {
+    if (!userId) return;
+    const current = getLocalDiagrams(userId);
     // Check if already exists, update if so
     const index = current.findIndex((d) => d.id === diagram.id);
     if (index >= 0) {
@@ -33,11 +34,12 @@ export const saveLocalDiagram = (diagram: LocalDiagram) => {
     } else {
         current.unshift(diagram); // Add to top
     }
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(current));
+    localStorage.setItem(getStorageKey(userId), JSON.stringify(current));
 };
 
-export const removeLocalDiagram = (id: number) => {
-    const current = getLocalDiagrams();
+export const removeLocalDiagram = (userId: number | string, id: number) => {
+    if (!userId) return;
+    const current = getLocalDiagrams(userId);
     const filtered = current.filter((d) => d.id !== id);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(filtered));
+    localStorage.setItem(getStorageKey(userId), JSON.stringify(filtered));
 };

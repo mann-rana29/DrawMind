@@ -24,8 +24,15 @@ async def start_chat(request: ChatRequest, db: AsyncSession = Depends(get_db), c
         optimized_prompt = generate_prompt(request.message)
         generated_code = generate_code_llm(optimized_prompt)
         
+        print(f"DEBUG: Generated PlantUML Code:\n{generated_code}") # Log code for debugging
+
         # Render the diagram to SVG
-        render_result = kroki_rendering_svg_with_src(generated_code)
+        try:
+            render_result = kroki_rendering_svg_with_src(generated_code)
+        except Exception as video_render_error:
+            print(f"Kroki Rendering Failed. Code was: {generated_code}")
+            raise ValueError(f"Unable to render svg: {str(video_render_error)}")
+
         svg_content = render_result["svg_content"]
 
         # Create new diagram
@@ -112,7 +119,15 @@ async def continue_chat(diagram_id : int , request : ChatRequest, db : AsyncSess
 
         optimized_prompt = generate_prompt(context)
         updated_code = generate_code_llm(optimized_prompt)
-        render_result = kroki_rendering_svg_with_src(updated_code)
+        
+        print(f"DEBUG: Updated PlantUML Code:\n{updated_code}")
+
+        try:
+            render_result = kroki_rendering_svg_with_src(updated_code)
+        except Exception as video_render_error:
+            print(f"Kroki Rendering Failed (Continuation). Code was: {updated_code}")
+            raise ValueError(f"Unable to render svg: {str(video_render_error)}")
+            
         updated_diagram = render_result["svg_content"]
 
         diagram.plantuml_code = updated_code

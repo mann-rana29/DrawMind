@@ -34,7 +34,19 @@ def generate_code_llm(text: str) -> str:
             ),
             contents=f"{text}"
         )
-        return response.text
+        
+        # Clean up the response
+        cleaned_text = response.text.strip()
+        
+        # Remove markdown code blocks if present
+        if cleaned_text.startswith("```"):
+            # Remove first line (```plantuml or just ```)
+            cleaned_text = "\n".join(cleaned_text.split("\n")[1:])
+            # Remove last line if it is ```
+            if cleaned_text.endswith("```"):
+                cleaned_text = cleaned_text[:-3].strip()
+        
+        return cleaned_text
     except Exception as e:
         # Log or handle error as needed
         raise Exception(f"LLM code generation failed: {e}")
