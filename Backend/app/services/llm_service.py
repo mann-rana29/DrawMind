@@ -54,7 +54,9 @@ def generate_code_llm(text: str) -> str:
         
         return cleaned_text
     except Exception as e:
-        # Log or handle error as needed
+        error_msg = str(e)
+        if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
+             raise Exception(f"RATE_LIMIT_EXCEEDED: {error_msg}")
         raise Exception(f"LLM code generation failed: {e}")
 def generate_prompt(text : str) -> str:
     try:
@@ -70,4 +72,7 @@ def generate_prompt(text : str) -> str:
         )
         return response.text
     except Exception as e:
+        error_msg = str(e)
+        if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
+             raise Exception(f"RATE_LIMIT_EXCEEDED: {error_msg}")
         raise Exception(f"Error while generating prompt : {e}")

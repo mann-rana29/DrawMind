@@ -77,8 +77,16 @@ async def start_chat(request: ChatRequest, db: AsyncSession = Depends(get_db), c
             message="New diagram created successfully"
         )
 
+    except HTTPException as he:
+        await db.rollback()
+        raise he
     except Exception as e:
         await db.rollback()
+        if "RATE_LIMIT_EXCEEDED" in str(e):
+             raise HTTPException(
+                status_code=429,
+                detail="AI Rate Limit Exceeded. Please try again in 1 minute."
+            )
         raise HTTPException(
             status_code=500,
             detail=f"Failed to create diagram: {str(e)}"
@@ -175,6 +183,14 @@ async def continue_chat(diagram_id : int , request : ChatRequest, db : AsyncSess
             },
             message = "Chat updated diagram successfully"
         )
+    except HTTPException as he:
+        await db.rollback()
+        raise he
     except Exception as e:
         await db.rollback()
+        if "RATE_LIMIT_EXCEEDED" in str(e):
+             raise HTTPException(
+                status_code=429,
+                detail="AI Rate Limit Exceeded. Please try again in 1 minute."
+            )
         raise HTTPException(status_code=500, detail = f"Failed to continue chat : {str(e)}")
