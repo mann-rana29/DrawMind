@@ -76,9 +76,10 @@ export default function DiagramPage() {
 
             setMessages(prev => [...prev, { role: 'assistant', content: message || "Diagram updated" }]);
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Chat error", error);
-            setMessages(prev => [...prev, { role: 'assistant', content: "Failed to update diagram. Please try again." }]);
+            const errorMessage = error.response?.data?.detail || "Failed to update diagram. Please try again.";
+            setMessages(prev => [...prev, { role: 'assistant', content: errorMessage }]);
         } finally {
             setLoading(false);
         }

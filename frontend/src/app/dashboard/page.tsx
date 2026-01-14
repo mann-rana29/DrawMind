@@ -55,9 +55,10 @@ export default function DashboardPage() {
                 saveLocalDiagram(user.id, newDiagram);
             }
             router.push(`/diagram/${diagram_id}`);
-        } catch (error) {
+        } catch (error: any) {
             console.error('Failed to create diagram', error);
-            alert('Failed to create diagram. Please try again.');
+            const message = error.response?.data?.detail || 'Failed to create diagram. Please try again.';
+            alert(message);
             setCreating(false);
         }
     };

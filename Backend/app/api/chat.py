@@ -22,6 +22,12 @@ async def start_chat(request: ChatRequest, db: AsyncSession = Depends(get_db), c
     try:
         # Generate optimized prompt and code
         optimized_prompt = generate_prompt(request.message)
+        
+        # Check for refusal (off-topic request)
+        if optimized_prompt.startswith("REFUSAL:"):
+            refusal_message = optimized_prompt.replace("REFUSAL:", "").strip()
+            raise HTTPException(status_code=400, detail=refusal_message)
+
         generated_code = generate_code_llm(optimized_prompt)
         
         print(f"DEBUG: Generated PlantUML Code:\n{generated_code}") # Log code for debugging
@@ -118,6 +124,12 @@ async def continue_chat(diagram_id : int , request : ChatRequest, db : AsyncSess
         - Do NOT create a new diagram from scratch"""
 
         optimized_prompt = generate_prompt(context)
+        
+        # Check for refusal (off-topic request)
+        if optimized_prompt.startswith("REFUSAL:"):
+            refusal_message = optimized_prompt.replace("REFUSAL:", "").strip()
+            raise HTTPException(status_code=400, detail=refusal_message)
+
         updated_code = generate_code_llm(optimized_prompt)
         
         print(f"DEBUG: Updated PlantUML Code:\n{updated_code}")
