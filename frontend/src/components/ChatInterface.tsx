@@ -81,19 +81,19 @@ export const ChatInterface = ({ onSendMessage, messages: initialMessages, isLoad
             </div>
 
             <div className="p-4 border-t border-neutral-800 bg-neutral-900">
-                <form onSubmit={handleSubmit} className="flex gap-2">
+                <form onSubmit={handleSubmit} className="flex justify-center items-center gap-2">
                     <Input
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder="Type your instruction..."
-                        className="bg-neutral-950 border-neutral-800 text-white focus-visible:ring-indigo-500"
+                        className="bg-neutral-950 w-[300px] border-neutral-800 text-white focus-visible:ring-indigo-500"
                         disabled={isLoading}
                     />
                     <Button
                         type="submit"
                         size="default"
                         disabled={isLoading || !input.trim()}
-                        className="bg-indigo-600 hover:bg-indigo-500 text-white shrink-0"
+                        className="bg-indigo-600 hover:bg-indigo-900 cursor-pointer  text-white shrink-0"
                     >
                         {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                     </Button>

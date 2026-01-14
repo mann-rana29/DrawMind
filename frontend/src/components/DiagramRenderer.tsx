@@ -56,7 +56,7 @@ export const DiagramRenderer = ({ svgContent, isLoading }: DiagramRendererProps)
     return (
         <div className="flex flex-col h-full bg-[#1e1e1e] relative overflow-hidden text-white">
             {/* Toolbar */}
-            <div className="absolute top-4 right-4 flex flex-col gap-2 z-10 bg-neutral-800/80 p-2 rounded-lg backdrop-blur-sm border border-neutral-700">
+            <div className="absolute top-4 right-4 flex flex-col gap-2 z-50 bg-neutral-800/80 p-2 rounded-lg backdrop-blur-sm border border-neutral-700">
                 <Button
                     variant="ghost"
                     size="sm"
