@@ -2,6 +2,7 @@
 llm_service.py: Business logic for LLM code generation
 """
 
+import re
 from google import genai
 from google.genai import types
 import os
@@ -35,14 +36,19 @@ def generate_code_llm(text: str) -> str:
             contents=f"{text}"
         )
         
-        # Clean up the response
-        cleaned_text = response.text.strip()
+        # Clean up the response using Regex to find the PlantUML block
+        raw_text = response.text.strip()
         
-        # Remove markdown code blocks if present
+        # Look for @startuml ... @enduml
+        match = re.search(r'(@startuml.*?@enduml)', raw_text, re.DOTALL)
+        if match:
+            return match.group(1)
+            
+        # Fallback: existing stripping logic if regex doesn't match (e.g. maybe just code without tags?)
+        # But PlantUML usually requires tags. If not found, return cleaned text.
+        cleaned_text = raw_text
         if cleaned_text.startswith("```"):
-            # Remove first line (```plantuml or just ```)
             cleaned_text = "\n".join(cleaned_text.split("\n")[1:])
-            # Remove last line if it is ```
             if cleaned_text.endswith("```"):
                 cleaned_text = cleaned_text[:-3].strip()
         

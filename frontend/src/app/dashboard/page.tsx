@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { getLocalDiagrams, LocalDiagram, saveLocalDiagram } from '@/lib/store';
+import { getLocalDiagrams, LocalDiagram, saveLocalDiagram, migrateLegacyData } from '@/lib/store';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { Plus, MessageSquare, Clock } from 'lucide-react';
@@ -28,6 +28,8 @@ export default function DashboardPage() {
     useEffect(() => {
         // Load diagrams
         if (user?.id) {
+            // Attempt migration of old data first
+            migrateLegacyData(user.id);
             setDiagrams(getLocalDiagrams(user.id));
         }
     }, [user]);
