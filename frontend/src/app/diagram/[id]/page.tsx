@@ -10,11 +10,6 @@ import { DiagramRenderer } from '@/components/DiagramRenderer';
 import { getLocalDiagrams, saveLocalDiagram, LocalDiagram } from '@/lib/store';
 import api from '@/lib/api';
 
-// NextJS 16 params usage: params is a promise
-// But standard client component `useParams` hook handles it automatically.
-// The file is 'page.tsx', so it receives `params` prop. 
-// "In Next.js 13+ with App Router, params is a prop, but for client components we use useParams()"
-// Actually `useParams` from `next/navigation` is the way.
 
 interface Message {
     role: 'user' | 'assistant';

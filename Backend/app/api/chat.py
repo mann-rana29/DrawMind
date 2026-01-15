@@ -191,6 +191,6 @@ async def continue_chat(diagram_id : int , request : ChatRequest, db : AsyncSess
         if "RATE_LIMIT_EXCEEDED" in str(e):
              raise HTTPException(
                 status_code=429,
-                detail="AI Rate Limit Exceeded. Please try again in 1 minute."
+                detail="AI Rate Limit Exceeded. Please try again tomorrow."
             )
         raise HTTPException(status_code=500, detail = f"Failed to continue chat : {str(e)}")
