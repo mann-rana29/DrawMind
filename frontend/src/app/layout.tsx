@@ -35,7 +35,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" >
+      <head>
+        <link rel="preconnect" href="https://www.loom.com" />
+        <link rel="preconnect" href="https://cdn.loom.com" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMontserrat.variable} ${geistRoboto.variable} ${geistMono.variable} antialiased`}
       >
