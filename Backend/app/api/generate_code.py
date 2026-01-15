@@ -11,7 +11,7 @@ from pydantic import BaseModel
 router = APIRouter()
 
 class GenerateRequest(BaseModel):
-    prompt: str  # The user's natural language prompt
+    prompt: str  # The actual text the user wants to turn into a diagram
 
 @router.post("/generate", response_model=Response)
 async def generate_code(request: GenerateRequest , db : AsyncSession = Depends(get_db) , current_user : User = Depends(get_current_user)):
@@ -20,7 +20,7 @@ async def generate_code(request: GenerateRequest , db : AsyncSession = Depends(g
     This endpoint accepts a prompt and returns generated PlantUML code.
     """
     try:
-        # Call your service layer
+        # We hand this off to the LLM service to do the heavy lifting
         optimized_prompt = generate_prompt(request.prompt)
         generated_code = generate_code_llm(optimized_prompt)
 
@@ -46,7 +46,7 @@ async def generate_code(request: GenerateRequest , db : AsyncSession = Depends(g
         await db.commit()
 
 
-        # Return structured response
+        # Wrap it all up in a nice JSON response
         return Response(
             success=True,
             data={
@@ -58,7 +58,7 @@ async def generate_code(request: GenerateRequest , db : AsyncSession = Depends(g
         )
 
     except Exception as e:
-        # Use HTTPException for proper error handling
+        # Something went wrong, let's make sure we return a proper 500 error
         await db.rollback()
         raise HTTPException(
             status_code=500,
@@ -71,7 +71,7 @@ async def test_database(db: AsyncSession = Depends(get_db)):
     Test endpoint to verify database connection and table existence.
     """
     try:
-        # Check if tables exist
+        # Just query the schema to see if our tables are actually there
         result = await db.execute(text("""
             SELECT table_name 
             FROM information_schema.tables 

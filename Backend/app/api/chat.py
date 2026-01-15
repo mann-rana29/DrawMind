@@ -10,7 +10,7 @@ from pydantic import BaseModel
 router  = APIRouter()
 
 class ChatRequest(BaseModel):
-    message: str  # User's natural language message
+    message: str  # The message the user just typed
 
 # New endpoint for initializing chat with just a message
 @router.post("/chat", response_model=Response)
@@ -20,17 +20,17 @@ async def start_chat(request: ChatRequest, db: AsyncSession = Depends(get_db), c
     User sends a message, gets back a rendered SVG diagram.
     """
     try:
-        # Generate optimized prompt and code
+        # Turn the user's request into a structued prompt and get the code
         optimized_prompt = generate_prompt(request.message)
         
-        # Check for refusal (off-topic request)
+        # Make sure the request isn't asking for non-diagram stuff
         if optimized_prompt.startswith("REFUSAL:"):
             refusal_message = optimized_prompt.replace("REFUSAL:", "").strip()
             raise HTTPException(status_code=400, detail=refusal_message)
 
         generated_code = generate_code_llm(optimized_prompt)
         
-        print(f"DEBUG: Generated PlantUML Code:\n{generated_code}") # Log code for debugging
+        print(f"DEBUG: Generated PlantUML Code:\n{generated_code}") # Keeping this for debugging purposes
 
         # Render the diagram to SVG
         try:
@@ -44,7 +44,8 @@ async def start_chat(request: ChatRequest, db: AsyncSession = Depends(get_db), c
         # Create new diagram
         diagram = Diagram(
             owner_id=current_user.id,
-            title=request.message[:100] + "..." if len(request.message) > 100 else request.message,  # Truncate long titles
+            # Truncate title if it's too long, otherwise it breaks the UI
+            title=request.message[:100] + "..." if len(request.message) > 100 else request.message,
             plantuml_code=generated_code,
             svg_content=svg_content
         )
@@ -69,8 +70,8 @@ async def start_chat(request: ChatRequest, db: AsyncSession = Depends(get_db), c
                 "svg_content": svg_content,
                 "src": render_result["src"],
                 "kroki_url": render_result["kroki_url"],
-                "redirect_to_chat": True,  # Signal frontend to switch to chat mode
-                "chat_endpoint": f"/api/v1/diagrams/{diagram.id}/chat",  # Ready-to-use endpoint
+                "redirect_to_chat": True,  # Let the frontend know we should move to the chat view
+                "chat_endpoint": f"/api/v1/diagrams/{diagram.id}/chat",  # The exact URL to hit next
                 "diagram_title": diagram.title,
                 "message": f"Created diagram: {diagram.title}"
             },
@@ -107,9 +108,9 @@ async def continue_chat(diagram_id : int , request : ChatRequest, db : AsyncSess
             select(ChatHistory)
             .filter(ChatHistory.diagram_id == diagram_id)
             .order_by(ChatHistory.message_order.desc())
-            .limit(3)  # Only last 3 messages
+            .limit(3)  # We only grab the last few messages so the prompt doesn't get too huge
         )
-        recent_messages = list(reversed(chat_history.scalars().all()))  # Reverse to chronological order
+        recent_messages = list(reversed(chat_history.scalars().all()))  # Flip them back so they read chronologically
 
         # Build optimized context with limited history
         context = f"""TASK: Update the existing PlantUML diagram based on the user's request.
@@ -176,7 +177,7 @@ async def continue_chat(diagram_id : int , request : ChatRequest, db : AsyncSess
                 "svg_content" : updated_diagram,
                 "src": render_result["src"],
                 "kroki_url": render_result["kroki_url"],
-                "is_continuation": True,  # Signal this is a chat continuation
+                "is_continuation": True,  # Just noting that this was a followup chat, not a new diagram
                 "message_order": next_order,
                 "diagram_title": diagram.title,
                 "message": "Diagram updated successfully based on your request"
@@ -192,5 +193,10 @@ async def continue_chat(diagram_id : int , request : ChatRequest, db : AsyncSess
              raise HTTPException(
                 status_code=429,
                 detail="AI Rate Limit Exceeded. Please try again tomorrow."
+            )
+        if "503" in str(e) or "overloaded" in str(e).lower():
+             raise HTTPException(
+                status_code=503,
+                detail="The AI model is currently overloaded. Please try again in 30 seconds."
             )
         raise HTTPException(status_code=500, detail = f"Failed to continue chat : {str(e)}")
