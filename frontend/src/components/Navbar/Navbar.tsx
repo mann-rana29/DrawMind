@@ -157,7 +157,7 @@ const Navbar = () => {
                 <Link href="/login" onClick={() => setIsMenuOpen(false)}>
                   <Button
                     size={"lg"}
-                    className="w-full bg-cyan-500 hover:bg-white/90 font-semibold  cursor-pointer transition duration-300 ease-in-out"
+                    className="w-full bg-cyan-500 hover:bg-white/90 font-semibold  cursor-pointer transition duration-300 ease-in-out border-2 border-amber-100"
                   >
                     Login
                   </Button>
