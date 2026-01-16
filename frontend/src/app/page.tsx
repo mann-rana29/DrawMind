@@ -2,6 +2,8 @@ import Head from "next/head";
 import Hero from "@/components/HeroSection/Hero";
 import Navbar from "@/components/Navbar/Navbar";
 import Faq from "@/components/FAQ/Faq";
+import Footer from "@/components/Footer/Footer";
+import GetStarted from "@/components/GetStarted";
 
 export default function Home() {
   return (
@@ -21,7 +23,9 @@ export default function Home() {
         <div className="w-full h-full">
           <Navbar/>
           <Hero/>
+          <GetStarted/>
           <Faq/>
+          <Footer/>
         </div>
 
       </div>
