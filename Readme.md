@@ -12,10 +12,7 @@
 
 ## 📹 Demo
 
-<video width="100%" controls>
-  <source src="./demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[**▶ Watch Demo Video**](./demo.mp4)
 
 ## What Makes DrawMind Special?
 
