@@ -27,7 +27,7 @@ def generate_code_llm(text: str) -> str:
     try:
         system_instruct = get_system_instruction_for_code()
         response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
+            model="gemma-4-26b-a4b-it",
             config=types.GenerateContentConfig(
                 system_instruction=system_instruct,
                 temperature=0.7,
@@ -62,7 +62,7 @@ def generate_prompt(text : str) -> str:
     try:
         system_instruct = get_system_instruction_for_prompt()
         response = client.models.generate_content(
-                model="gemini-2.5-flash-lite",
+                model="gemma-4-26b-a4b-it",
                 config=types.GenerateContentConfig(
                     system_instruction= system_instruct,
                     temperature=0.7,

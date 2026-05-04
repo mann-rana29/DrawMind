@@ -10,6 +10,12 @@
 
 **DrawMind** is an intelligent, AI-powered platform that revolutionizes UML diagram creation through natural language processing. Transform your ideas into professional diagrams instantly using conversational prompts, edit them with simple descriptions, and share them seamlessly. Built with enterprise-grade architecture, complete authentication system, and scalable cloud infrastructure.
 
+## 📹 Demo
+
+<video width="100%" controls>
+  <source src="./vdeo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 ## What Makes DrawMind Special?
 
