@@ -12,7 +12,7 @@
 
 ## 📹 Demo
 
-[**▶ Watch Demo Video**](./demo.mp4)
+[**▶ Watch Demo Video**](https://res.cloudinary.com/mannr075/video/upload/v1779404299/demo_qjrurr.mp4)
 
 ## What Makes DrawMind Special?
 
